@@ -6,16 +6,16 @@ export default [
     tags: ['Puzzle', 'Casual'],
     rating: 5,
     downloads: '10',
-    coverImage: '/src/assets/images/NhacMania.webp'
+    coverImage: '/src/assets/images/NhacMania.jpg'
   },
   {
     id: 2,
     title: 'Zig Zag Tap',
-    description: 'Batalhas espaciais multiplayer com gráficos impressionantes',
+    description: 'Pegue os pontos iguais e desvie dos diferentes',
     tags: ['Ação', 'Casual'],
     rating: 4.6,
     downloads: '100k',
-    coverImage: ''
+    coverImage: '/src/assets/images/ZigZagTap.png'
   },
   {
     id: 3,
