@@ -13,8 +13,8 @@ export default [
     title: 'Zig Zag Tap',
     description: 'Pegue os pontos iguais e desvie dos diferentes',
     tags: ['Ação', 'Casual'],
-    rating: 4.6,
-    downloads: '100k',
+    rating: 5,
+    downloads: '10',
     coverImage: '/src/assets/images/ZigZagTap.png'
   },
   {
