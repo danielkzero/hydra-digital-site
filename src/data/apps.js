@@ -3,18 +3,6 @@ import MhjrPCP from '@/assets/images/tela.9842321.jpg';
 import Aspirador from '@/assets/images/AspiradorInfo1.png';
 import TaskBox from '@/assets/images/taskbox.webp'
 
-  /**
-   * Exporta um array de objetos que representam os aplicativos que ser o
-   * exibidos na se o "Aplicativos" da p gina inicial.
-   *
-   * Cada objeto tem as seguintes propriedades:
-   * - id: um n mero  nico que identifica o aplicativo
-   * - title: o t tulo do aplicativo
-   * - description: uma breve descri o do aplicativo
-   * - coverImage: a imagem de capa do aplicativo
-   * - playStoreLink: o link para a p gina do aplicativo na Play Store
-   * - appStoreLink: o link para a p gina do aplicativo na App Store
-   */
 export default [
   {
     id: 4,
