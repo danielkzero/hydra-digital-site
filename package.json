@@ -1,0 +1,23 @@
+{
+  "name": "hydra-digital",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node deploy.js",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "boxicons": "^2.1.4",
+    "vue": "^3.3.0",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.0",
+    "autoprefixer": "^10.4.14",
+    "ftp-deploy": "^2.4.7",
+    "postcss": "^8.4.23",
+    "tailwindcss": "^3.3.2",
+    "vite": "^4.3.5"
+  }
+}
