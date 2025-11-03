@@ -1,0 +1,47 @@
+import GestorMobile from '@/assets/images/tela.88e8b992.jpg';
+import MhjrPCP from '@/assets/images/tela.9842321.jpg';
+import Aspirador from '@/assets/images/AspiradorInfo1.png';
+import TaskBox from '@/assets/images/taskbox.webp'
+
+  /**
+   * Exporta um array de objetos que representam os aplicativos que ser o
+   * exibidos na se o "Aplicativos" da p gina inicial.
+   *
+   * Cada objeto tem as seguintes propriedades:
+   * - id: um n mero  nico que identifica o aplicativo
+   * - title: o t tulo do aplicativo
+   * - description: uma breve descri o do aplicativo
+   * - coverImage: a imagem de capa do aplicativo
+   * - playStoreLink: o link para a p gina do aplicativo na Play Store
+   * - appStoreLink: o link para a p gina do aplicativo na App Store
+   */
+export default [
+  {
+    id: 4,
+    title: 'Task Box',
+    description: 'O Task Box é um aplicativo de produtividade que ajuda você a organizar suas tarefas e listas de forma simples, rápida e eficiente.',
+    coverImage: TaskBox,
+    pathLink: '/apps/taskbox'
+  },
+  {
+    id: 1,
+    title: 'Gestor Mobile',
+    description: 'Aplicativo que permite criar e gerenciar pedidos online e offline, com sincronização automática. Ideal para representantes e clientes.',
+    coverImage: GestorMobile,
+    pathLink: '/apps/gestormobile'
+  }, 
+  {
+    id: 2,
+    title: 'Mini PCP',
+    description: 'Aplicativo que permite a gestão de pedidos de clientes, com funcionalidades avançadas de controle de estoque, PCP e financeiro.',
+    coverImage: MhjrPCP,
+    pathLink: '/apps/minipcp'
+  },
+  {
+    id: 3,
+    title: 'Aspirador Informações GoogleMaps',
+    description: 'Aplicativo que permite a visualização de informações de um cliente, como endereço, horários, telefones e outros, de maneira automatizada.',
+    coverImage: Aspirador,
+    pathLink: '/apps/aspirador'
+  }
+];
