@@ -1,29 +1,28 @@
 <template>
-  <div class="p-6 bg-gray-800 rounded-xl">
-    <div class="text-blue-500 text-4xl mb-4">
-      <i :class="[icon, 'w-12', 'h-12', 'text-5xl']"></i>
+  <SurfaceCard card-class="h-full p-6">
+    <div class="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-400/10 text-cyan-300">
+      <i :class="icon" class="text-3xl"></i>
     </div>
-    <h3 class="text-xl font-bold text-white mb-2">{{ title }}</h3>
-    <p class="text-gray-300">{{ description }}</p>
-  </div>
+    <h3 class="text-xl font-semibold text-white">{{ title }}</h3>
+    <p class="mt-3 leading-7 text-slate-300">{{ description }}</p>
+  </SurfaceCard>
 </template>
 
-<script>
-export default {
-  name: 'TechnologyCard',
-  props: {
-    title: {
-      type: String,
-      required: true
-    },
-    description: {
-      type: String,
-      required: true
-    },
-    icon: {
-      type: Array,
-      required: true
-    }
-  }
-}
+<script setup>
+import SurfaceCard from '@/components/SurfaceCard.vue'
+
+defineProps({
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  icon: {
+    type: String,
+    required: true,
+  },
+})
 </script>

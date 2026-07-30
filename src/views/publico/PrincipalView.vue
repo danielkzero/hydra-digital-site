@@ -1,134 +1,54 @@
 <template>
+  <main>
+    <HeroSection :title="heroContent.title" :description="heroContent.description" :buttons="heroContent.actions" />
 
-
-
-  <main class="pt-20">
-    <HeroSection id="top" />
-
-    <!-- Applications Section -->
-    <section id="apps" class="container mx-auto px-4 py-20">
-      <h2 class="text-4xl font-bold text-white text-center mb-12">{{ appsTitle }}</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <SectionBlock
+      id="apps"
+      :eyebrow="sectionContent.apps.eyebrow"
+      :title="sectionContent.apps.title"
+      :description="sectionContent.apps.description"
+    >
+      <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         <AppCard v-for="app in apps" :key="app.id" v-bind="app" />
       </div>
-    </section>
+    </SectionBlock>
 
-    <!-- Featured Games Section -->
-    <section id="games" class="container mx-auto px-4 py-20">
-      <h2 class="text-4xl font-bold text-white text-center mb-12">{{ gamesTitle }}</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <SectionBlock
+      id="games"
+      :eyebrow="sectionContent.games.eyebrow"
+      :title="sectionContent.games.title"
+      :description="sectionContent.games.description"
+      muted
+    >
+      <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         <GameCard v-for="game in games" :key="game.id" v-bind="game" />
       </div>
-    </section>
+    </SectionBlock>
 
-    <!-- Technologies Section -->
-    <section id="techs" class="container mx-auto px-4 py-20 bg-gray-900/50">
-      <h2 class="text-4xl font-bold text-white text-center mb-12">{{ technologiesTitle }}</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <SectionBlock
+      id="techs"
+      :eyebrow="sectionContent.technologies.eyebrow"
+      :title="sectionContent.technologies.title"
+      :description="sectionContent.technologies.description"
+    >
+      <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         <TechnologyCard v-for="tech in technologies" :key="tech.id" v-bind="tech" />
       </div>
-    </section>
+    </SectionBlock>
 
+    <BlogHighlightsSection :content="sectionContent.blog" />
   </main>
 </template>
 
-<script>
-
-import HeroSection from '@/components/HeroSection.vue'
-import GameCard from '@/components/GameCard.vue'
+<script setup>
 import AppCard from '@/components/AppCard.vue'
+import BlogHighlightsSection from '@/components/BlogHighlightsSection.vue'
+import GameCard from '@/components/GameCard.vue'
+import HeroSection from '@/components/HeroSection.vue'
+import SectionBlock from '@/components/SectionBlock.vue'
 import TechnologyCard from '@/components/TechnologyCard.vue'
-
-import games from '@/data/games.js'
-import technologies from '@/data/technologies.js'
-import apps from '@/data/apps.js'
-
-export default {
-  name: 'PrincipalView',
-  components: {
-    HeroSection,
-    GameCard,
-    AppCard,
-    TechnologyCard
-  },
-  data() {
-    return {
-      appsTitle: 'Nossos Aplicativos',
-      gamesTitle: 'Nossos Jogos em Destaque',
-      technologiesTitle: 'Tecnologias que Utilizamos',      
-      games,
-      apps,
-      technologies,
-    }
-  },
-  computed: {
-    currentYear() {
-      return new Date().getFullYear()
-    }
-  },
-  mounted() {
-    window.addEventListener("scroll", this.handleScroll);
-  },
-  beforeUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
-  },
-  methods: {
-    handleScroll() {
-      this.isScrolled = window.scrollY > 50;
-    }
-  }
-}
+import apps from '@/data/apps'
+import games from '@/data/games'
+import { heroContent, sectionContent } from '@/data/site'
+import technologies from '@/data/technologies'
 </script>
-
-<style>
-@keyframes zoomFade {
-  0% {
-    opacity: 0;
-    transform: scale(1.1);
-  }
-
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 0.95;
-  }
-}
-
-@keyframes contentFade {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  30% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-zoom-fade {
-  animation: zoomFade 2.5s ease-out forwards;
-}
-
-.animate-fade-in {
-  animation: fadeIn 2.5s ease-out forwards;
-}
-
-.animate-content-fade {
-  animation: contentFade 3s ease-out forwards;
-}
-</style>

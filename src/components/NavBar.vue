@@ -1,67 +1,65 @@
 <template>
   <nav
     v-if="hiddenMenu"
-    :class="['w-full px-6 py-4 transition-all duration-300 fixed top-0 left-0 z-50', isScrolled ? 'bg-gray-900/95 backdrop-blur-sm shadow-lg' : '']"
+    :class="[
+      'fixed left-0 top-0 z-50 w-full transition-all duration-300',
+      isScrolled ? 'border-b border-white/10 bg-slate-950/85 shadow-2xl shadow-slate-950/20 backdrop-blur-xl' : 'bg-transparent',
+    ]"
   >
-    <div class="flex items-center justify-between container mx-auto">
-      <!-- Logo + Título -->
-      <router-link to="/" class="flex items-center space-x-3">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+      <router-link to="/" class="flex items-center gap-3">
         <img src="@/assets/images/logoCentral.png" alt="Hydra Digital Logo" class="h-10 w-auto" />
-        <span class="text-2xl font-bold text-white">{{ title }}</span>
+        <div>
+          <span class="block text-lg font-semibold tracking-[0.2em] text-cyan-300">{{ title }}</span>
+          <span class="block text-xs uppercase tracking-[0.35em] text-slate-400">Digital Products</span>
+        </div>
       </router-link>
 
-      <!-- Menu Desktop -->
-      <div class="space-x-6 hidden md:flex">
+      <div class="hidden items-center gap-2 md:flex">
         <a
           v-for="item in menuItems"
           :key="item.id"
           :href="item.href"
-          @click.prevent="handleMobileNavigation(item.href)"
-          class="text-white hover:text-blue-400 transition-colors flex items-center space-x-2"
+          class="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-slate-200 transition hover:bg-white/5 hover:text-cyan-300"
+          @click.prevent="navigate(item.href)"
         >
           <i :class="item.icon" class="text-xl"></i>
           <span>{{ item.label }}</span>
         </a>
       </div>
 
-      <!-- Hamburguer Menu -->
       <div class="md:hidden">
-        <button @click="toggleMobileMenu" class="text-white hover:text-blue-400 transition-colors">
+        <button @click="toggleMobileMenu" class="text-white transition-colors hover:text-cyan-300">
           <i class="bx bx-menu text-2xl"></i>
         </button>
       </div>
     </div>
 
-    <!-- Mobile Menu Aside -->
-    <aside
-      v-show="isMobileMenuOpen"
-      class="fixed inset-0 z-50 md:hidden"
-      @click="closeMobileMenu"
-    >
+    <aside v-show="isMobileMenuOpen" class="fixed inset-0 z-50 md:hidden" @click="closeMobileMenu">
       <div
-        class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+        class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"
         :class="isMobileMenuOpen ? 'opacity-100' : 'opacity-0'"
       ></div>
 
       <div
-        class="absolute right-0 top-0 h-full w-96 bg-gray-900/95 shadow-lg transform transition-transform duration-300"
+        class="absolute right-0 top-0 h-full w-full max-w-xs border-l border-white/10 bg-slate-950/95 p-6 shadow-lg transition-transform duration-300"
         :class="isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'"
         @click.stop
       >
         <button
           @click="closeMobileMenu"
-          class="absolute top-6 right-6 text-white hover:text-blue-400 transition-colors"
+          class="absolute right-6 top-6 text-white transition-colors hover:text-cyan-300"
         >
           <i class="bx bx-x text-2xl"></i>
         </button>
 
-        <div class="flex flex-col pt-20 px-6">
+        <div class="flex flex-col pt-16">
           <a
             v-for="item in menuItems"
             :key="item.id"
             :href="item.href"
-            @click.prevent="handleMobileNavigation(item.href)"
-            class="text-white hover:text-blue-400 transition-colors flex items-center space-x-3 py-4 border-b border-gray-700 last:border-none"
+            class="flex items-center gap-3 border-b border-white/10 py-4 text-white transition-colors last:border-none hover:text-cyan-300"
+            @click.prevent="navigate(item.href)"
           >
             <i :class="item.icon" class="text-2xl"></i>
             <span class="text-lg">{{ item.label }}</span>
@@ -73,80 +71,52 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { onBeforeUnmount, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
-const props = defineProps({
+import { useScrollState } from '@/composables/useScrollState'
+import { useSectionNavigation } from '@/composables/useSectionNavigation'
+
+defineProps({
   title: { type: String, default: 'HydraDigital' },
   hiddenMenu: { type: Boolean, default: true },
   menuItems: {
     type: Array,
-    default: () => [
-      { id: 1, href: '/#apps', label: 'Aplicativos', icon: 'bx bx-mobile-alt' },
-      { id: 2, href: '/#games', label: 'Jogos', icon: 'bx bx-game' },
-      { id: 3, href: '/#contact', label: 'Contato', icon: 'bx bx-envelope' }
-    ]
-  }
-});
+    default: () => [],
+  },
+})
 
-const isScrolled = ref(false);
-const isMobileMenuOpen = ref(false);
+const router = useRouter()
+const isMobileMenuOpen = ref(false)
+const { isScrolled } = useScrollState()
+const { navigateToSection } = useSectionNavigation()
 
-const router = useRouter();
-const route = useRoute();
-
-// Detecta scroll para adicionar sombra e fundo no navbar
-const handleScroll = () => {
-  isScrolled.value = window.scrollY > 50;
-};
-
-// Scroll suave para qualquer seção
-const scrollToSection = (href) => {
-  const element = document.querySelector(href.replace('/', ''));
-  if (element) {
-    const navbarHeight = 80;
-    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-    const offsetPosition = elementPosition - navbarHeight;
-
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth'
-    });
-  }
-};
-
-// Menu mobile
-const toggleMobileMenu = () => {
-  isMobileMenuOpen.value = !isMobileMenuOpen.value;
-  document.body.style.overflow = isMobileMenuOpen.value ? 'hidden' : '';
-};
-
-const closeMobileMenu = () => {
-  isMobileMenuOpen.value = false;
-  document.body.style.overflow = '';
-};
-
-// Corrige navegação mobile: redireciona se não estiver na página principal e faz scroll
-const handleMobileNavigation = (href) => {
-  const currentPath = route.path;
-  if (currentPath !== '/') {
-    router.push('/').then(() => {
-      // Pequeno timeout para garantir que a página carregou
-      setTimeout(() => scrollToSection(href), 100);
-    });
-  } else {
-    scrollToSection(href);
-  }
-  closeMobileMenu();
-};
-
-// Listeners
-onMounted(() => window.addEventListener('scroll', handleScroll));
-onBeforeUnmount(() => window.removeEventListener('scroll', handleScroll));
-</script>
-
-<style scoped>
-nav {
-  transition: background-color 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
+function syncBodyScroll() {
+  document.body.style.overflow = isMobileMenuOpen.value ? 'hidden' : ''
 }
-</style>
+
+function toggleMobileMenu() {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value
+}
+
+function closeMobileMenu() {
+  isMobileMenuOpen.value = false
+}
+
+async function navigate(href) {
+  if (href.startsWith('/')) {
+    await router.push(href)
+    closeMobileMenu()
+    return
+  }
+
+  await navigateToSection(href)
+  closeMobileMenu()
+}
+
+watch(isMobileMenuOpen, syncBodyScroll, { immediate: true })
+
+onBeforeUnmount(() => {
+  document.body.style.overflow = ''
+})
+</script>

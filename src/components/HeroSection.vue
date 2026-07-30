@@ -1,61 +1,46 @@
 <template>
-  <section class="container mx-auto px-4 py-20 text-center">
-    <h1 class="text-5xl font-bold text-white mb-6">
-      {{ title }}
-    </h1>
-    <p class="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
-      {{ description }}
-    </p>
-    <div class="flex justify-center gap-4">
-      <a v-for="button in buttons" @click.prevent="scrollToSection(button.href)" :key="button.id" :href="button.href"
-        :class="[
-          'px-8 py-3 rounded-lg transition-colors',
-          button.primary ?
-            'bg-blue-600 hover:bg-blue-700 text-white' :
-            'border border-blue-600 text-blue-500 hover:bg-blue-600 hover:text-white'
-        ]">
-        {{ button.label }}
-      </a>
+  <section class="mx-auto flex min-h-[calc(100vh-7rem)] w-full max-w-6xl items-center px-4 py-20 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <p class="section-eyebrow">Hydra Digital</p>
+      <h1 class="max-w-4xl text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+        {{ title }}
+      </h1>
+      <p class="mx-auto mt-6 max-w-3xl text-lg leading-8 text-slate-300 sm:text-xl">
+        {{ description }}
+      </p>
+      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          v-for="button in buttons"
+          :key="button.id"
+          :href="button.href"
+          class="inline-flex min-w-52 items-center justify-center rounded-full px-6 py-3 text-sm font-medium transition duration-300"
+          :class="button.variant === 'primary' ? 'bg-cyan-400 text-slate-950 hover:bg-cyan-300' : 'border border-white/15 bg-white/5 text-white hover:border-cyan-300 hover:text-cyan-200'"
+          @click.prevent="navigateToSection(button.href)"
+        >
+          {{ button.label }}
+        </a>
+      </div>
     </div>
   </section>
 </template>
 
-<script>
-import { scrollToSection } from '@/utils/scroll';
+<script setup>
+import { useSectionNavigation } from '@/composables/useSectionNavigation'
 
-export default {
-  name: 'HeroSection',
-  props: {
-    title: {
-      type: String,
-      default: 'Bem-vindo à HydraDigital'
-    },
-    description: {
-      type: String,
-      default: 'Transformando ideias em experiências digitais incríveis.'
-    },
-    buttons: {
-      type: Array,
-      default: () => [
-        { id: 1, label: 'Nossos Apps', href: '#apps', primary: true },
-        { id: 2, label: 'Contato', href: '#contact', primary: false }
-      ]
-    }
+defineProps({
+  title: {
+    type: String,
+    default: 'Produtos digitais para operacao e crescimento',
   },
-  methods: {
-    scrollToSection(href) {
-      const element = document.querySelector(href);
-      if (element) {
-        const navbarHeight = 80; // Altura aproximada da navbar
-        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-        const offsetPosition = elementPosition - navbarHeight;
+  description: {
+    type: String,
+    default: 'Aplicativos, jogos e sistemas com foco em qualidade de entrega e manutencao.',
+  },
+  buttons: {
+    type: Array,
+    default: () => [],
+  },
+})
 
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
-    }
-  }
-}
+const { navigateToSection } = useSectionNavigation()
 </script>
