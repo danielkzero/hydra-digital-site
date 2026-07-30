@@ -4,17 +4,23 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node deploy.js",
+    "dev:web": "vite",
+    "dev:api": "php -S 127.0.0.1:8081 -t api/public",
+    "dev:full": "concurrently \"npm:dev:web\" \"npm:dev:api\"",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueup/vue-quill": "^1.2.0",
     "boxicons": "^2.1.4",
+    "dotenv": "^17.2.3",
     "vue": "^3.3.0",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.0",
     "autoprefixer": "^10.4.14",
+    "concurrently": "^9.2.1",
     "ftp-deploy": "^2.4.7",
     "postcss": "^8.4.23",
     "tailwindcss": "^3.3.2",
